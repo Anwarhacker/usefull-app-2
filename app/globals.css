@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #121212;
+  --foreground: #e0e0e0;
+  --secondary-text: #a0a0a0;
+  --card-bg: #1e1e1e;
+  --card-bg-hover: #2d2d2d;
+  --brand-blue: #3b82f6;
+  --success-green: #22c55e;
+  --danger-red: #dc2626;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-secondary-text: var(--secondary-text);
+  --color-card-bg: var(--card-bg);
+  --color-card-bg-hover: var(--card-bg-hover);
+  --color-brand-blue: var(--brand-blue);
+  --color-success-green: var(--success-green);
+  --color-danger-red: var(--danger-red);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Custom utility classes */
+.bg-card {
+  background-color: var(--card-bg);
+}
+
+.bg-card-hover {
+  background-color: var(--card-bg-hover);
+}
+
+.text-secondary {
+  color: var(--secondary-text);
+}
+
+.text-brand-blue {
+  color: var(--brand-blue);
+}
+
+.bg-brand-blue {
+  background-color: var(--brand-blue);
+}
+
+.text-success-green {
+  color: var(--success-green);
+}
+
+.bg-danger-red {
+  background-color: var(--danger-red);
+}
+
+/* Focus styles */
+.focus-brand-blue:focus {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Responsive text utilities */
+@media (max-width: 640px) {
+  .text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  .text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
