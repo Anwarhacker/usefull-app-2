@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Edit, Trash2, SortAsc, SortDesc } from "lucide-react";
 import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
 import Modal from "./Modal";
 import CopyButton from "./CopyButton";
+import SearchBar from "./SearchBar";
 
 const CommandsSection = () => {
   const [commands, setCommands] = useState([]);
@@ -16,10 +17,55 @@ const CommandsSection = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({ title: "", command: "" });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("title");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     fetchCommands();
   }, []);
+
+  // Filter and sort commands
+  const filteredAndSortedCommands = useMemo(() => {
+    let filtered = commands.filter((command) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        command.title.toLowerCase().includes(searchLower) ||
+        command.command.toLowerCase().includes(searchLower)
+      );
+    });
+
+    // Sort the filtered results
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortBy) {
+        case "title":
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+          break;
+        case "command":
+          aValue = a.command.toLowerCase();
+          bValue = b.command.toLowerCase();
+          break;
+        case "createdAt":
+          aValue = new Date(a.createdAt || 0);
+          bValue = new Date(b.createdAt || 0);
+          break;
+        default:
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+      }
+
+      if (sortOrder === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+
+    return filtered;
+  }, [commands, searchTerm, sortBy, sortOrder]);
 
   const fetchCommands = async () => {
     try {
@@ -103,6 +149,15 @@ const CommandsSection = () => {
     setShowDeleteModal(true);
   };
 
+  const toggleSort = (field) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortOrder("asc");
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8 sm:py-12 text-sm sm:text-base">
@@ -123,8 +178,61 @@ const CommandsSection = () => {
         </Button>
       </div>
 
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        placeholder="Search commands..."
+        className="mb-4"
+      />
+
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-sm text-secondary">Sort by:</span>
+        <Button
+          onClick={() => toggleSort("title")}
+          variant={sortBy === "title" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Title{" "}
+          {sortBy === "title" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("command")}
+          variant={sortBy === "command" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Command{" "}
+          {sortBy === "command" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("createdAt")}
+          variant={sortBy === "createdAt" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Date{" "}
+          {sortBy === "createdAt" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+      </div>
+
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {commands.map((command) => (
+        {filteredAndSortedCommands.map((command) => (
           <Card key={command._id} className="relative">
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-semibold text-brand-blue text-sm sm:text-base truncate pr-2">
@@ -157,9 +265,15 @@ const CommandsSection = () => {
         ))}
       </div>
 
-      {commands.length === 0 && (
+      {commands.length === 0 && !searchTerm && (
         <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
           No commands found. Add your first command!
+        </div>
+      )}
+
+      {commands.length > 0 && filteredAndSortedCommands.length === 0 && (
+        <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
+          No commands match your search "{searchTerm}".
         </div>
       )}
 

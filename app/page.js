@@ -1,18 +1,29 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Key, FolderOpen, Terminal, FileText } from "lucide-react";
+import {
+  Menu,
+  X,
+  Key,
+  FolderOpen,
+  Terminal,
+  FileText,
+  BarChart3,
+} from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import KeyValueSection from "../components/KeyValueSection";
 import ProjectsSection from "../components/ProjectsSection";
 import CommandsSection from "../components/CommandsSection";
 import NotesSection from "../components/NotesSection";
+import StatisticsDashboard from "../components/StatisticsDashboard";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState("keyvalues");
+  const [activeSection, setActiveSection] = useState("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
+    { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "keyvalues", label: "Key-Value Store", icon: Key },
     { id: "projects", label: "Projects", icon: FolderOpen },
     { id: "commands", label: "Commands", icon: Terminal },
@@ -21,6 +32,8 @@ export default function Home() {
 
   const renderSection = () => {
     switch (activeSection) {
+      case "dashboard":
+        return <StatisticsDashboard />;
       case "keyvalues":
         return <KeyValueSection />;
       case "projects":
@@ -30,7 +43,7 @@ export default function Home() {
       case "notes":
         return <NotesSection />;
       default:
-        return <KeyValueSection />;
+        return <StatisticsDashboard />;
     }
   };
 
@@ -54,13 +67,16 @@ export default function Home() {
           <h1 className="text-lg sm:text-xl font-bold text-brand-blue">
             DevTools
           </h1>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-secondary hover:text-foreground p-2 rounded-lg hover:bg-card-hover transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-secondary hover:text-foreground p-2 rounded-lg hover:bg-card-hover transition-colors-smooth"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
         {mobileMenuOpen && (
           <div className="border-t border-card-hover mobile-nav">

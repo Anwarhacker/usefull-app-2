@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Edit, Trash2, SortAsc, SortDesc } from "lucide-react";
 import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
 import Modal from "./Modal";
 import CopyButton from "./CopyButton";
+import SearchBar from "./SearchBar";
 
 const KeyValueSection = () => {
   const [keyValues, setKeyValues] = useState([]);
@@ -16,10 +17,55 @@ const KeyValueSection = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({ key: "", value: "" });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("key");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     fetchKeyValues();
   }, []);
+
+  // Filter and sort key-values
+  const filteredAndSortedKeyValues = useMemo(() => {
+    let filtered = keyValues.filter((item) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        item.key.toLowerCase().includes(searchLower) ||
+        item.value.toLowerCase().includes(searchLower)
+      );
+    });
+
+    // Sort the filtered results
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortBy) {
+        case "key":
+          aValue = a.key.toLowerCase();
+          bValue = b.key.toLowerCase();
+          break;
+        case "value":
+          aValue = a.value.toLowerCase();
+          bValue = b.value.toLowerCase();
+          break;
+        case "createdAt":
+          aValue = new Date(a.createdAt || 0);
+          bValue = new Date(b.createdAt || 0);
+          break;
+        default:
+          aValue = a.key.toLowerCase();
+          bValue = b.key.toLowerCase();
+      }
+
+      if (sortOrder === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+
+    return filtered;
+  }, [keyValues, searchTerm, sortBy, sortOrder]);
 
   const fetchKeyValues = async () => {
     try {
@@ -103,6 +149,15 @@ const KeyValueSection = () => {
     setShowDeleteModal(true);
   };
 
+  const toggleSort = (field) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortOrder("asc");
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8 sm:py-12 text-sm sm:text-base">
@@ -123,8 +178,61 @@ const KeyValueSection = () => {
         </Button>
       </div>
 
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        placeholder="Search key-value pairs..."
+        className="mb-4"
+      />
+
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-sm text-secondary">Sort by:</span>
+        <Button
+          onClick={() => toggleSort("key")}
+          variant={sortBy === "key" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Key{" "}
+          {sortBy === "key" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("value")}
+          variant={sortBy === "value" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Value{" "}
+          {sortBy === "value" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("createdAt")}
+          variant={sortBy === "createdAt" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Date{" "}
+          {sortBy === "createdAt" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+      </div>
+
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {keyValues.map((item) => (
+        {filteredAndSortedKeyValues.map((item) => (
           <Card key={item._id} className="relative">
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center space-x-2 flex-1 min-w-0">
@@ -163,9 +271,15 @@ const KeyValueSection = () => {
         ))}
       </div>
 
-      {keyValues.length === 0 && (
+      {keyValues.length === 0 && !searchTerm && (
         <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
           No key-value pairs found. Add your first one!
+        </div>
+      )}
+
+      {keyValues.length > 0 && filteredAndSortedKeyValues.length === 0 && (
+        <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
+          No key-value pairs match your search "{searchTerm}".
         </div>
       )}
 

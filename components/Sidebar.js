@@ -1,9 +1,11 @@
 "use client";
 
-import { Key, FolderOpen, Terminal, FileText } from "lucide-react";
+import { Key, FolderOpen, Terminal, FileText, BarChart3 } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
   const menuItems = [
+    { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "keyvalues", label: "Key-Value Store", icon: Key },
     { id: "projects", label: "Projects", icon: FolderOpen },
     { id: "commands", label: "Commands", icon: Terminal },
@@ -12,9 +14,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
 
   return (
     <div className="hidden md:flex md:flex-col md:w-56 lg:w-64 bg-card p-3 sm:p-4 border-r border-card-hover">
-      <h1 className="text-lg sm:text-xl font-bold mb-6 sm:mb-8 text-brand-blue">
-        DevTools
-      </h1>
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <h1 className="text-lg sm:text-xl font-bold text-brand-blue">
+          DevTools
+        </h1>
+        <ThemeToggle />
+      </div>
       <nav className="space-y-1 sm:space-y-2">
         {menuItems.map((item) => {
           const Icon = item.icon;

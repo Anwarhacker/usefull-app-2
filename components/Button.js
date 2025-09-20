@@ -7,7 +7,7 @@ const Button = ({
   ...props
 }) => {
   const baseClasses =
-    "rounded-lg font-medium transition-colors focus-brand-blue disabled:opacity-50 disabled:cursor-not-allowed";
+    "rounded-lg font-medium transition-colors-smooth focus-brand-blue disabled:opacity-50 disabled:cursor-not-allowed hover-lift";
 
   const variantClasses = {
     primary: "bg-brand-blue text-white hover:bg-blue-600 active:bg-blue-700",

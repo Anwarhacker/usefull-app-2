@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Edit, Trash2, SortAsc, SortDesc } from "lucide-react";
 import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
 import Modal from "./Modal";
 import CopyButton from "./CopyButton";
+import SearchBar from "./SearchBar";
 
 const NotesSection = () => {
   const [notes, setNotes] = useState([]);
@@ -16,10 +17,55 @@ const NotesSection = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({ title: "", content: "" });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("title");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  // Filter and sort notes
+  const filteredAndSortedNotes = useMemo(() => {
+    let filtered = notes.filter((note) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        note.title.toLowerCase().includes(searchLower) ||
+        note.content.toLowerCase().includes(searchLower)
+      );
+    });
+
+    // Sort the filtered results
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortBy) {
+        case "title":
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+          break;
+        case "content":
+          aValue = a.content.toLowerCase();
+          bValue = b.content.toLowerCase();
+          break;
+        case "createdAt":
+          aValue = new Date(a.createdAt || 0);
+          bValue = new Date(b.createdAt || 0);
+          break;
+        default:
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+      }
+
+      if (sortOrder === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+
+    return filtered;
+  }, [notes, searchTerm, sortBy, sortOrder]);
 
   const fetchNotes = async () => {
     try {
@@ -103,6 +149,15 @@ const NotesSection = () => {
     setShowDeleteModal(true);
   };
 
+  const toggleSort = (field) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortOrder("asc");
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8 sm:py-12 text-sm sm:text-base">
@@ -123,8 +178,61 @@ const NotesSection = () => {
         </Button>
       </div>
 
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        placeholder="Search notes..."
+        className="mb-4"
+      />
+
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-sm text-secondary">Sort by:</span>
+        <Button
+          onClick={() => toggleSort("title")}
+          variant={sortBy === "title" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Title{" "}
+          {sortBy === "title" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("content")}
+          variant={sortBy === "content" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Content{" "}
+          {sortBy === "content" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("createdAt")}
+          variant={sortBy === "createdAt" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Date{" "}
+          {sortBy === "createdAt" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+      </div>
+
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {notes.map((note) => (
+        {filteredAndSortedNotes.map((note) => (
           <Card key={note._id} className="relative">
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-semibold text-brand-blue text-sm sm:text-base truncate pr-2">
@@ -159,9 +267,15 @@ const NotesSection = () => {
         ))}
       </div>
 
-      {notes.length === 0 && (
+      {notes.length === 0 && !searchTerm && (
         <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
           No notes found. Add your first note!
+        </div>
+      )}
+
+      {notes.length > 0 && filteredAndSortedNotes.length === 0 && (
+        <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
+          No notes match your search "{searchTerm}".
         </div>
       )}
 

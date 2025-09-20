@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Edit, Trash2, Plus, X } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Edit, Trash2, Plus, X, SortAsc, SortDesc } from "lucide-react";
 import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
 import Modal from "./Modal";
 import CopyButton from "./CopyButton";
+import SearchBar from "./SearchBar";
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState([]);
@@ -16,10 +17,55 @@ const ProjectsSection = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({ name: "", urls: [""] });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  // Filter and sort projects
+  const filteredAndSortedProjects = useMemo(() => {
+    let filtered = projects.filter((project) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        project.name.toLowerCase().includes(searchLower) ||
+        project.urls.some((url) => url.toLowerCase().includes(searchLower))
+      );
+    });
+
+    // Sort the filtered results
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortBy) {
+        case "name":
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case "urlCount":
+          aValue = a.urls.length;
+          bValue = b.urls.length;
+          break;
+        case "createdAt":
+          aValue = new Date(a.createdAt || 0);
+          bValue = new Date(b.createdAt || 0);
+          break;
+        default:
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+      }
+
+      if (sortOrder === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+
+    return filtered;
+  }, [projects, searchTerm, sortBy, sortOrder]);
 
   const fetchProjects = async () => {
     try {
@@ -124,6 +170,15 @@ const ProjectsSection = () => {
     setFormData({ ...formData, urls: newUrls });
   };
 
+  const toggleSort = (field) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortOrder("asc");
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8 sm:py-12 text-sm sm:text-base">
@@ -144,8 +199,61 @@ const ProjectsSection = () => {
         </Button>
       </div>
 
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        placeholder="Search projects..."
+        className="mb-4"
+      />
+
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-sm text-secondary">Sort by:</span>
+        <Button
+          onClick={() => toggleSort("name")}
+          variant={sortBy === "name" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Name{" "}
+          {sortBy === "name" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("urlCount")}
+          variant={sortBy === "urlCount" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          URLs{" "}
+          {sortBy === "urlCount" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+        <Button
+          onClick={() => toggleSort("createdAt")}
+          variant={sortBy === "createdAt" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Date{" "}
+          {sortBy === "createdAt" &&
+            (sortOrder === "asc" ? (
+              <SortAsc size={12} className="ml-1" />
+            ) : (
+              <SortDesc size={12} className="ml-1" />
+            ))}
+        </Button>
+      </div>
+
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {projects.map((project) => (
+        {filteredAndSortedProjects.map((project) => (
           <Card key={project._id} className="relative">
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-semibold text-brand-blue text-sm sm:text-base truncate pr-2">
@@ -194,9 +302,15 @@ const ProjectsSection = () => {
         ))}
       </div>
 
-      {projects.length === 0 && (
+      {projects.length === 0 && !searchTerm && (
         <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
           No projects found. Add your first project!
+        </div>
+      )}
+
+      {projects.length > 0 && filteredAndSortedProjects.length === 0 && (
+        <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
+          No projects match your search "{searchTerm}".
         </div>
       )}
 
