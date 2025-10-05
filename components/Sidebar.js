@@ -8,6 +8,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "keyvalues", label: "Key-Value Store", icon: Key },
     { id: "projects", label: "Projects", icon: FolderOpen },
+    { id: "websites", label: "Websites", icon: Globe },
     { id: "commands", label: "Commands", icon: Terminal },
     { id: "notes", label: "Notes", icon: FileText },
   ];
