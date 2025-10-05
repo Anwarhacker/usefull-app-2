@@ -194,7 +194,7 @@ const WebsitesSection = () => {
         className="mb-4"
       />
 
-      {/* <div className="flex flex-wrap items-center gap-2 mb-4">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-sm text-secondary">Sort by:</span>
         <Button
           onClick={() => toggleSort("title")}
@@ -238,10 +238,9 @@ const WebsitesSection = () => {
               <SortDesc size={12} className="ml-1" />
             ))}
         </Button>
-      </div> */}
+      </div>
 
       <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="text-sm text-secondary">Filter by:</span>
         <Button
           onClick={() => setSelectedCategory("All")}
           variant={selectedCategory === "All" ? "primary" : "secondary"}
@@ -274,9 +273,17 @@ const WebsitesSection = () => {
         >
           Deployed
         </Button>
+        {/* <Button
+          onClick={() => setSelectedCategory("Personal")}
+          variant={selectedCategory === "Personal" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Personal
+        </Button> */}
       </div>
 
-      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {filteredAndSortedWebsites.map((website) => (
           <Card key={website._id} className="relative">
             <div className="flex justify-between items-start mb-2">
@@ -364,8 +371,8 @@ const WebsitesSection = () => {
           placeholder="Enter website URL"
           type="url"
         />
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-secondary">
+        <div className="mb-4 sm:mb-5">
+          <label className="block text-sm sm:text-base font-medium mb-2 sm:mb-3 text-secondary">
             Category
           </label>
           <select
@@ -373,11 +380,12 @@ const WebsitesSection = () => {
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
-            className="flex-1 px-3 py-2 bg-card border border-card-hover rounded-lg text-foreground placeholder-secondary focus-brand-blue text-sm min-h-[40px] w-full"
+            className="w-full touch-target px-4 py-3 sm:px-4 sm:py-3 bg-card border border-card-hover rounded-lg text-foreground focus-brand-blue focus:ring-2 focus:ring-brand-blue focus:ring-opacity-20 text-base sm:text-base transition-all duration-200"
           >
             <option value="AI">AI</option>
             <option value="AI Agent">AI Agent</option>
             <option value="Deployed">Deployed</option>
+            <option value="Personal">Personal</option>
           </select>
         </div>
       </Modal>
@@ -420,8 +428,8 @@ const WebsitesSection = () => {
           placeholder="Enter website URL"
           type="url"
         />
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-secondary">
+        <div className="mb-4 sm:mb-5">
+          <label className="block text-sm sm:text-base font-medium mb-2 sm:mb-3 text-secondary">
             Category
           </label>
           <select
@@ -429,11 +437,12 @@ const WebsitesSection = () => {
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
-            className="flex-1 px-3 py-2 bg-card border border-card-hover rounded-lg text-foreground placeholder-secondary focus-brand-blue text-sm min-h-[40px] w-full"
+            className="w-full touch-target px-4 py-3 sm:px-4 sm:py-3 bg-card border border-card-hover rounded-lg text-foreground focus-brand-blue focus:ring-2 focus:ring-brand-blue focus:ring-opacity-20 text-base sm:text-base transition-all duration-200"
           >
             <option value="AI">AI</option>
             <option value="AI Agent">AI Agent</option>
             <option value="Deployed">Deployed</option>
+            <option value="Personal">Personal</option>
           </select>
         </div>
       </Modal>

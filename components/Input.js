@@ -5,13 +5,15 @@ const Input = ({
   placeholder,
   type = "text",
   className = "",
+  required = false,
   ...props
 }) => {
   return (
-    <div className="mb-3 sm:mb-4">
+    <div className="mb-4 sm:mb-5">
       {label && (
-        <label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-secondary">
+        <label className="block text-sm sm:text-base font-medium mb-2 sm:mb-3 text-secondary">
           {label}
+          {required && <span className="text-danger-red ml-1">*</span>}
         </label>
       )}
       <input
@@ -19,7 +21,8 @@ const Input = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full px-3 py-2 sm:px-3 sm:py-2 bg-card border border-card-hover rounded-lg text-foreground placeholder-secondary focus-brand-blue text-sm sm:text-base min-h-[40px] sm:min-h-[44px] ${className}`}
+        required={required}
+        className={`w-full touch-target px-4 py-3 sm:px-4 sm:py-3 bg-card border border-card-hover rounded-lg text-foreground placeholder-secondary focus-brand-blue focus:ring-2 focus:ring-brand-blue focus:ring-opacity-20 text-base sm:text-base transition-all duration-200 ${className}`}
         {...props}
       />
     </div>

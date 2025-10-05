@@ -1,6 +1,13 @@
 "use client";
 
-import { Key, FolderOpen, Terminal, FileText, BarChart3, Globe } from "lucide-react";
+import {
+  Key,
+  FolderOpen,
+  Terminal,
+  FileText,
+  BarChart3,
+  Globe,
+} from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
@@ -14,27 +21,27 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
   ];
 
   return (
-    <div className="hidden md:flex md:flex-col md:w-56 lg:w-64 bg-card p-3 sm:p-4 border-r border-card-hover">
-      <div className="flex items-center justify-between mb-6 sm:mb-8">
-        <h1 className="text-lg sm:text-xl font-bold text-brand-blue">
+    <div className="hidden md:flex md:flex-col w-64 lg:w-72 xl:w-80 bg-card p-4 lg:p-6 border-r border-card-hover">
+      <div className="flex items-center justify-between mb-8 lg:mb-10">
+        <h1 className="text-xl lg:text-2xl font-bold text-brand-blue">
           DevTools
         </h1>
         <ThemeToggle />
       </div>
-      <nav className="space-y-1 sm:space-y-2">
+      <nav className="space-y-2 lg:space-y-3">
         {menuItems.map((item) => {
           const Icon = item.icon;
           return (
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
-              className={`w-full flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${
+              className={`w-full touch-target flex items-center space-x-3 lg:space-x-4 px-3 lg:px-4 py-3 lg:py-4 rounded-lg transition-all duration-200 text-base lg:text-lg font-medium ${
                 activeSection === item.id
-                  ? "bg-brand-blue text-white shadow-md"
-                  : "text-secondary hover:bg-card-hover hover:text-foreground"
+                  ? "bg-brand-blue text-white shadow-lg transform scale-[1.02]"
+                  : "text-secondary hover:bg-card-hover hover:text-foreground hover:translate-x-1"
               }`}
             >
-              <Icon size={18} className="sm:w-5 sm:h-5" />
+              <Icon size={20} className="flex-shrink-0" />
               <span className="truncate">{item.label}</span>
             </button>
           );

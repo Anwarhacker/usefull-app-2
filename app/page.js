@@ -68,25 +68,27 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Mobile Navigation */}
       <div className="md:hidden bg-card border-b border-card-hover sticky top-0 z-40">
-        <div className="flex items-center justify-between px-3 sm:px-4 py-3 sm:py-4">
-          <h1 className="text-lg sm:text-xl font-bold text-brand-blue">
-            DevTools
-          </h1>
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between px-4 py-4">
+          <h1 className="text-xl font-bold text-brand-blue">DevTools</h1>
+          <div className="flex items-center space-x-3">
             <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-secondary hover:text-foreground p-2 rounded-lg hover:bg-card-hover transition-colors-smooth"
+              className="touch-target text-secondary hover:text-foreground p-2 rounded-lg hover:bg-card-hover transition-colors-smooth flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-        {mobileMenuOpen && (
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="border-t border-card-hover mobile-nav">
-            <nav className="px-3 sm:px-4 py-2 space-y-1">
-              {menuItems.map((item) => {
+            <nav className="px-4 py-3 space-y-2">
+              {menuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
                   <button
@@ -95,20 +97,26 @@ export default function Home() {
                       setActiveSection(item.id);
                       setMobileMenuOpen(false);
                     }}
-                    className={`w-full flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors text-sm sm:text-base ${
+                    className={`w-full touch-target flex items-center space-x-4 px-4 py-4 rounded-lg transition-all duration-200 text-base font-medium ${
                       activeSection === item.id
-                        ? "bg-brand-blue text-white shadow-md"
-                        : "text-secondary hover:bg-card-hover hover:text-foreground"
+                        ? "bg-brand-blue text-white shadow-lg transform scale-[1.02]"
+                        : "text-secondary hover:bg-card-hover hover:text-foreground hover:translate-x-1"
                     }`}
+                    style={{
+                      animationDelay: `${index * 50}ms`,
+                      animation: mobileMenuOpen
+                        ? "slideIn 0.3s ease-out forwards"
+                        : "none",
+                    }}
                   >
-                    <Icon size={18} className="sm:w-5 sm:h-5" />
+                    <Icon size={20} className="flex-shrink-0" />
                     <span className="truncate">{item.label}</span>
                   </button>
                 );
               })}
             </nav>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Desktop Layout */}

@@ -11,6 +11,155 @@
   --danger-red: #dc2626;
 }
 
+/* Enhanced responsive breakpoints */
+@custom-media --xs (min-width: 475px);
+@custom-media --sm (min-width: 640px);
+@custom-media --md (min-width: 768px);
+@custom-media --lg (min-width: 1024px);
+@custom-media --xl (min-width: 1280px);
+@custom-media --2xl (min-width: 1536px);
+
+/* Touch-friendly sizing for mobile */
+@media (max-width: 767px) {
+  /* Ensure touch targets are at least 44px */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better tap targets for buttons */
+  button, .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improved text sizing for mobile readability */
+  .text-mobile-xs { font-size: 0.75rem; line-height: 1rem; }
+  .text-mobile-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-mobile-base { font-size: 1rem; line-height: 1.5rem; }
+  .text-mobile-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-mobile-xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .text-mobile-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .text-mobile-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tablet\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tablet\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  /* Better spacing for tablet */
+  .tablet\:p-4 { padding: 1rem; }
+  .tablet\:p-6 { padding: 1.5rem; }
+  .tablet\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .tablet\:py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1024px) {
+  .desktop\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .desktop\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+  /* Better hover states for desktop */
+  .desktop\:hover-scale:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Enhanced responsive spacing utilities */
+@media (max-width: 479px) {
+  /* Extra tight spacing for small screens */
+  .container-xs { max-width: 100%; padding-left: 1rem; padding-right: 1rem; }
+  .section-xs { padding: 1.5rem 1rem; }
+  .gap-xs-2 { gap: 0.5rem; }
+  .gap-xs-3 { gap: 0.75rem; }
+  .gap-xs-4 { gap: 1rem; }
+  .m-xs-2 { margin: 0.5rem; }
+  .m-xs-3 { margin: 0.75rem; }
+  .m-xs-4 { margin: 1rem; }
+  .p-xs-2 { padding: 0.5rem; }
+  .p-xs-3 { padding: 0.75rem; }
+  .p-xs-4 { padding: 1rem; }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  /* Mobile landscape spacing */
+  .container-sm { max-width: 100%; padding-left: 1.25rem; padding-right: 1.25rem; }
+  .section-sm { padding: 2rem 1.25rem; }
+  .gap-sm-3 { gap: 0.75rem; }
+  .gap-sm-4 { gap: 1rem; }
+  .gap-sm-5 { gap: 1.25rem; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet spacing */
+  .container-md { max-width: 100%; padding-left: 2rem; padding-right: 2rem; }
+  .section-md { padding: 2.5rem 2rem; }
+  .gap-md-4 { gap: 1rem; }
+  .gap-md-5 { gap: 1.25rem; }
+  .gap-md-6 { gap: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop spacing */
+  .container-lg { max-width: 1200px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; }
+  .container-xl { max-width: 1400px; margin: 0 auto; padding-left: 2.5rem; padding-right: 2.5rem; }
+  .section-lg { padding: 3rem 2rem; }
+  .section-xl { padding: 4rem 2.5rem; }
+  .gap-lg-6 { gap: 1.5rem; }
+  .gap-lg-8 { gap: 2rem; }
+}
+
+/* Responsive padding for main content areas */
+.main-content {
+  padding: 1rem;
+}
+
+@media (min-width: 480px) {
+  .main-content {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    padding: 2rem;
+  }
+}
+
+/* Better button spacing on mobile */
+@media (max-width: 767px) {
+  .btn-group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-group .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Improved card spacing */
+@media (max-width: 767px) {
+  .card-grid {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-grid {
+    gap: 1.5rem;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -87,16 +236,56 @@ body {
   -webkit-line-clamp: 3;
 }
 
-/* Responsive text utilities */
-@media (max-width: 640px) {
-  .text-xs {
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-  .text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
+/* Enhanced responsive typography scale */
+@media (max-width: 479px) {
+  /* Extra small screens */
+  .text-2xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .text-3xl { font-size: 1.5rem; line-height: 2rem; }
+  .text-4xl { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  /* Mobile landscape */
+  .text-3xl { font-size: 1.75rem; line-height: 2.25rem; }
+  .text-4xl { font-size: 2rem; line-height: 2.5rem; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet */
+  .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  .text-5xl { font-size: 3rem; line-height: 3rem; }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop */
+  .text-5xl { font-size: 3rem; line-height: 3rem; }
+  .text-6xl { font-size: 3.75rem; line-height: 3.75rem; }
+}
+
+/* Improved mobile typography */
+@media (max-width: 767px) {
+  h1, .text-2xl { font-size: 1.5rem; line-height: 2rem; font-weight: 700; }
+  h2, .text-xl { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; }
+  h3, .text-lg { font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; }
+
+  .text-base { font-size: 1rem; line-height: 1.5rem; }
+  .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-xs { font-size: 0.75rem; line-height: 1rem; }
+
+  /* Better paragraph spacing on mobile */
+  p { margin-bottom: 1rem; }
+}
+
+/* Tablet typography improvements */
+@media (min-width: 768px) and (max-width: 1023px) {
+  h1, .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+  h2, .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+}
+
+/* Desktop typography enhancements */
+@media (min-width: 1024px) {
+  h1, .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  h2, .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
 }
 
 /* Animations and transitions */
@@ -119,6 +308,28 @@ body {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes mobileMenuSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
