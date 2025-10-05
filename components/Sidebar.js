@@ -1,6 +1,6 @@
 "use client";
 
-import { Key, FolderOpen, Terminal, FileText, BarChart3 } from "lucide-react";
+import { Key, FolderOpen, Terminal, FileText, BarChart3, Globe } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
