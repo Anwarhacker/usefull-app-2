@@ -1,15 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import {
-  Edit,
-  Trash2,
-  Plus,
-  X,
-  SortAsc,
-  SortDesc,
-  Link,
-} from "lucide-react";
+import { Edit, Trash2, Plus, X, SortAsc, SortDesc, Link } from "lucide-react";
 import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
@@ -31,6 +23,7 @@ const WebsitesSection = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     fetchWebsites();
@@ -45,6 +38,12 @@ const WebsitesSection = () => {
         website.category.toLowerCase().includes(searchLower)
       );
     });
+
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter(
+        (website) => website.category === selectedCategory
+      );
+    }
 
     filtered.sort((a, b) => {
       let aValue, bValue;
@@ -75,7 +74,7 @@ const WebsitesSection = () => {
     });
 
     return filtered;
-  }, [websites, searchTerm, sortBy, sortOrder]);
+  }, [websites, searchTerm, sortBy, sortOrder, selectedCategory]);
 
   const fetchWebsites = async () => {
     try {
@@ -195,7 +194,7 @@ const WebsitesSection = () => {
         className="mb-4"
       />
 
-      <div className="flex flex-wrap items-center gap-2 mb-4">
+      {/* <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-sm text-secondary">Sort by:</span>
         <Button
           onClick={() => toggleSort("title")}
@@ -238,6 +237,42 @@ const WebsitesSection = () => {
             ) : (
               <SortDesc size={12} className="ml-1" />
             ))}
+        </Button>
+      </div> */}
+
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-sm text-secondary">Filter by:</span>
+        <Button
+          onClick={() => setSelectedCategory("All")}
+          variant={selectedCategory === "All" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          All
+        </Button>
+        <Button
+          onClick={() => setSelectedCategory("AI")}
+          variant={selectedCategory === "AI" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          AI
+        </Button>
+        <Button
+          onClick={() => setSelectedCategory("AI Agent")}
+          variant={selectedCategory === "AI Agent" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          AI Agent
+        </Button>
+        <Button
+          onClick={() => setSelectedCategory("Deployed")}
+          variant={selectedCategory === "Deployed" ? "primary" : "secondary"}
+          size="sm"
+          className="text-xs"
+        >
+          Deployed
         </Button>
       </div>
 

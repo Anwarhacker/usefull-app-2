@@ -185,7 +185,7 @@ const CommandsSection = () => {
         className="mb-4"
       />
 
-      <div className="flex flex-wrap items-center gap-2 mb-4">
+      {/* <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-sm text-secondary">Sort by:</span>
         <Button
           onClick={() => toggleSort("title")}
@@ -229,7 +229,7 @@ const CommandsSection = () => {
               <SortDesc size={12} className="ml-1" />
             ))}
         </Button>
-      </div>
+      </div> */}
 
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredAndSortedCommands.map((command) => (
