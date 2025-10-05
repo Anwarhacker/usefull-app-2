@@ -169,19 +169,31 @@ const WebsitesSection = () => {
 
   if (loading) {
     return (
-      <div className="text-center py-8 sm:py-12 text-sm sm:text-base">
-        Loading...
+      <div className="flex items-center justify-center py-20">
+        <div className="animate-shimmer bg-gradient-to-r from-surface via-surface-hover to-surface rounded-2xl p-8">
+          <div className="animate-pulse text-foreground-muted text-lg">
+            Loading websites...
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-3 sm:p-4 md:p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
-        <h2 className="text-xl sm:text-2xl font-bold">Websites</h2>
+    <div className="p-6 sm:p-8 md:p-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 sm:mb-10 gap-4 sm:gap-0">
+        <div>
+          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+            Websites
+          </h2>
+          <p className="text-foreground-muted">
+            Manage your favorite websites and bookmarks
+          </p>
+        </div>
         <Button
           onClick={() => setShowAddModal(true)}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto animate-float"
+          variant="primary"
         >
           Add Website
         </Button>
@@ -283,40 +295,42 @@ const WebsitesSection = () => {
         </Button> */}
       </div>
 
-      <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="grid gap-6 sm:gap-8 lg:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {filteredAndSortedWebsites.map((website) => (
-          <Card key={website._id} className="relative">
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-semibold text-brand-blue text-sm sm:text-base truncate pr-2">
+          <Card key={website._id} className="relative group" variant="gradient">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="font-bold text-primary text-lg sm:text-xl truncate pr-3 group-hover:text-primary-hover transition-colors">
                 {website.title}
               </h3>
-              <div className="flex space-x-1 flex-shrink-0">
+              <div className="flex space-x-2 flex-shrink-0">
                 <Button
                   onClick={() => openEditModal(website)}
-                  variant="secondary"
+                  variant="ghost"
                   size="sm"
-                  className="p-1 sm:p-2"
+                  className="p-2 hover:bg-primary/10 hover:text-primary"
                 >
-                  <Edit size={14} className="sm:w-4 sm:h-4" />
+                  <Edit size={16} />
                 </Button>
                 <Button
                   onClick={() => openDeleteModal(website)}
-                  variant="danger"
+                  variant="ghost"
                   size="sm"
-                  className="p-1 sm:p-2"
+                  className="p-2 hover:bg-error/10 hover:text-error"
                 >
-                  <Trash2 size={14} className="sm:w-4 sm:h-4" />
+                  <Trash2 size={16} />
                 </Button>
               </div>
             </div>
-            <p className="text-xs text-secondary mb-2">{website.category}</p>
+            <p className="text-sm text-foreground-muted mb-4 bg-surface/50 rounded-lg px-3 py-1 inline-block">
+              {website.category}
+            </p>
             <a
               href={website.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-brand-blue rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              className="inline-flex items-center justify-center w-full px-5 py-3 text-base font-semibold text-white bg-gradient-to-r from-primary to-secondary rounded-xl hover:shadow-lg hover:shadow-primary/25 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 hover:scale-105"
             >
-              <Link size={14} className="mr-2" />
+              <Link size={16} className="mr-2" />
               Visit Website
             </a>
           </Card>
@@ -324,14 +338,34 @@ const WebsitesSection = () => {
       </div>
 
       {websites.length === 0 && !searchTerm && (
-        <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
-          No websites found. Add your first website!
+        <div className="text-center py-20">
+          <div className="glass-card p-12 rounded-3xl max-w-md mx-auto">
+            <div className="text-6xl mb-6">🌐</div>
+            <h3 className="text-2xl font-bold text-foreground mb-4">
+              No websites yet
+            </h3>
+            <p className="text-foreground-muted mb-6">
+              Start building your collection of favorite websites and bookmarks.
+            </p>
+            <Button onClick={() => setShowAddModal(true)} variant="primary">
+              Add Your First Website
+            </Button>
+          </div>
         </div>
       )}
 
       {websites.length > 0 && filteredAndSortedWebsites.length === 0 && (
-        <div className="text-center py-8 sm:py-12 text-secondary text-sm sm:text-base">
-          No websites match your search "{searchTerm}".
+        <div className="text-center py-20">
+          <div className="glass-card p-12 rounded-3xl max-w-md mx-auto">
+            <div className="text-6xl mb-6">🔍</div>
+            <h3 className="text-2xl font-bold text-foreground mb-4">
+              No matches found
+            </h3>
+            <p className="text-foreground-muted">
+              No websites match your search for "{searchTerm}". Try different
+              keywords.
+            </p>
+          </div>
         </div>
       )}
 

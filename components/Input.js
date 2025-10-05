@@ -6,14 +6,24 @@ const Input = ({
   type = "text",
   className = "",
   required = false,
+  variant = "default",
   ...props
 }) => {
+  const variants = {
+    default:
+      "bg-surface border-border hover:border-primary/50 focus:border-primary",
+    filled:
+      "bg-surface-hover border-border/50 hover:border-primary/50 focus:border-primary",
+    glass:
+      "glass border-border/20 hover:border-primary/30 focus:border-primary",
+  };
+
   return (
-    <div className="mb-4 sm:mb-5">
+    <div className="mb-6 sm:mb-7">
       {label && (
-        <label className="block text-sm sm:text-base font-medium mb-2 sm:mb-3 text-secondary">
+        <label className="block text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-foreground">
           {label}
-          {required && <span className="text-danger-red ml-1">*</span>}
+          {required && <span className="text-error ml-2">*</span>}
         </label>
       )}
       <input
@@ -22,7 +32,7 @@ const Input = ({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className={`w-full touch-target px-4 py-3 sm:px-4 sm:py-3 bg-card border border-card-hover rounded-lg text-foreground placeholder-secondary focus-brand-blue focus:ring-2 focus:ring-brand-blue focus:ring-opacity-20 text-base sm:text-base transition-all duration-200 ${className}`}
+        className={`w-full touch-target px-5 py-4 sm:px-6 sm:py-4 rounded-2xl text-foreground placeholder-foreground-muted focus:ring-2 focus:ring-primary/20 text-base sm:text-base transition-all duration-300 ${variants[variant]} ${className}`}
         {...props}
       />
     </div>

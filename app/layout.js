@@ -19,11 +19,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen overflow-x-hidden`}
       >
-        <div className="min-h-screen flex flex-col">{children}</div>
+        <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background-secondary to-background-tertiary">
+          {children}
+        </div>
       </body>
     </html>
   );

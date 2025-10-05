@@ -7,18 +7,25 @@ const Button = ({
   ...props
 }) => {
   const baseClasses =
-    "rounded-lg font-medium transition-colors-smooth focus-brand-blue disabled:opacity-50 disabled:cursor-not-allowed hover-lift";
+    "rounded-2xl font-semibold transition-all duration-200 focus-ring disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95";
 
   const variantClasses = {
-    primary: "bg-brand-blue text-white hover:bg-blue-600 active:bg-blue-700",
-    secondary: "bg-card-hover text-secondary hover:bg-card active:bg-card",
-    danger: "bg-danger-red text-white hover:bg-red-700 active:bg-red-800",
+    primary:
+      "bg-gradient-to-r from-primary to-primary-hover text-white hover:shadow-lg hover:shadow-primary/25",
+    secondary:
+      "bg-surface-hover text-foreground-secondary hover:bg-surface hover:text-foreground border border-border/50",
+    danger:
+      "bg-gradient-to-r from-error to-red-600 text-white hover:shadow-lg hover:shadow-error/25",
+    success:
+      "bg-gradient-to-r from-success to-green-600 text-white hover:shadow-lg hover:shadow-success/25",
+    ghost: "text-foreground-secondary hover:bg-surface hover:text-foreground",
+    glass: "glass text-foreground hover:bg-white/20",
   };
 
   const sizeClasses = {
-    sm: "px-2 py-1 text-xs sm:px-3 sm:py-1 sm:text-sm min-h-[32px] sm:min-h-[36px]",
-    md: "px-3 py-2 text-sm sm:px-4 sm:py-2 sm:text-base min-h-[36px] sm:min-h-[40px]",
-    lg: "px-4 py-2 text-base sm:px-6 sm:py-3 sm:text-lg min-h-[40px] sm:min-h-[44px]",
+    sm: "px-4 py-2 text-sm min-h-[40px]",
+    md: "px-6 py-3 text-base min-h-[48px]",
+    lg: "px-8 py-4 text-lg min-h-[56px]",
   };
 
   return (

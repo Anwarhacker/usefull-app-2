@@ -21,27 +21,27 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
   ];
 
   return (
-    <div className="hidden md:flex md:flex-col w-64 lg:w-72 xl:w-80 bg-card p-4 lg:p-6 border-r border-card-hover">
-      <div className="flex items-center justify-between mb-8 lg:mb-10">
-        <h1 className="text-xl lg:text-2xl font-bold text-brand-blue">
+    <div className="hidden md:flex md:flex-col w-72 lg:w-80 xl:w-96 glass p-6 lg:p-8 border-r border-border/20">
+      <div className="flex items-center justify-between mb-10 lg:mb-12">
+        <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           DevTools
         </h1>
         <ThemeToggle />
       </div>
-      <nav className="space-y-2 lg:space-y-3">
+      <nav className="space-y-3 lg:space-y-4">
         {menuItems.map((item) => {
           const Icon = item.icon;
           return (
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
-              className={`w-full touch-target flex items-center space-x-3 lg:space-x-4 px-3 lg:px-4 py-3 lg:py-4 rounded-lg transition-all duration-200 text-base lg:text-lg font-medium ${
+              className={`w-full touch-target flex items-center space-x-4 lg:space-x-5 px-4 lg:px-5 py-4 lg:py-5 rounded-xl transition-all duration-200 text-base lg:text-lg font-medium ${
                 activeSection === item.id
-                  ? "bg-brand-blue text-white shadow-lg transform scale-[1.02]"
-                  : "text-secondary hover:bg-card-hover hover:text-foreground hover:translate-x-1"
+                  ? "bg-gradient-to-r from-primary to-primary-hover text-white shadow-xl transform scale-[1.02]"
+                  : "text-foreground-secondary hover:bg-surface-hover hover:text-foreground hover:translate-x-2"
               }`}
             >
-              <Icon size={20} className="flex-shrink-0" />
+              <Icon size={22} className="flex-shrink-0" />
               <span className="truncate">{item.label}</span>
             </button>
           );

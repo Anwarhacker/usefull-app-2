@@ -65,16 +65,18 @@ export default function Home() {
   }, [mobileMenuOpen]);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Mobile Navigation */}
-      <div className="md:hidden bg-card border-b border-card-hover sticky top-0 z-40">
-        <div className="flex items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-bold text-brand-blue">DevTools</h1>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background-secondary to-background-tertiary">
+      {/* Modern Mobile Navigation */}
+      <div className="md:hidden glass sticky top-0 z-40 border-b border-border/20">
+        <div className="flex items-center justify-between px-6 py-5">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            DevTools
+          </h1>
           <div className="flex items-center space-x-3">
             <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="touch-target text-secondary hover:text-foreground p-2 rounded-lg hover:bg-card-hover transition-colors-smooth flex items-center justify-center"
+              className="touch-target text-foreground-secondary hover:text-foreground p-3 rounded-xl hover:bg-surface-hover transition-all duration-200 flex items-center justify-center focus-ring"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -86,8 +88,8 @@ export default function Home() {
             mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="border-t border-card-hover mobile-nav">
-            <nav className="px-4 py-3 space-y-2">
+          <div className="border-t border-border/20 mobile-nav">
+            <nav className="px-6 py-4 space-y-3">
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
@@ -97,10 +99,10 @@ export default function Home() {
                       setActiveSection(item.id);
                       setMobileMenuOpen(false);
                     }}
-                    className={`w-full touch-target flex items-center space-x-4 px-4 py-4 rounded-lg transition-all duration-200 text-base font-medium ${
+                    className={`w-full touch-target flex items-center space-x-4 px-5 py-4 rounded-xl transition-all duration-200 text-base font-medium ${
                       activeSection === item.id
-                        ? "bg-brand-blue text-white shadow-lg transform scale-[1.02]"
-                        : "text-secondary hover:bg-card-hover hover:text-foreground hover:translate-x-1"
+                        ? "bg-gradient-to-r from-primary to-primary-hover text-white shadow-xl transform scale-[1.02]"
+                        : "text-foreground-secondary hover:bg-surface-hover hover:text-foreground hover:translate-x-2"
                     }`}
                     style={{
                       animationDelay: `${index * 50}ms`,
@@ -119,19 +121,19 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Desktop Layout */}
+      {/* Modern Desktop Layout */}
       <div className="hidden md:flex min-h-screen">
         <Sidebar
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        <main className="flex-1 overflow-auto bg-background">
+        <main className="flex-1 overflow-auto bg-gradient-to-br from-background via-background-secondary to-background-tertiary">
           <div className="min-h-screen">{renderSection()}</div>
         </main>
       </div>
 
-      {/* Mobile Layout */}
-      <div className="md:hidden overflow-auto bg-background">
+      {/* Modern Mobile Layout */}
+      <div className="md:hidden overflow-auto bg-gradient-to-br from-background via-background-secondary to-background-tertiary">
         {renderSection()}
       </div>
     </div>
