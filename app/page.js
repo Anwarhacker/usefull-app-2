@@ -85,7 +85,7 @@ export default function Home() {
         </div>
         <div
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            mobileMenuOpen ? "max-h-105 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="border-t border-border/20 mobile-nav">
