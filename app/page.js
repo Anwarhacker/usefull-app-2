@@ -9,12 +9,14 @@ import {
   Terminal,
   FileText,
   BarChart3,
+  Globe,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import KeyValueSection from "../components/KeyValueSection";
 import ProjectsSection from "../components/ProjectsSection";
 import CommandsSection from "../components/CommandsSection";
 import NotesSection from "../components/NotesSection";
+import WebsitesSection from "../components/WebsitesSection";
 import StatisticsDashboard from "../components/StatisticsDashboard";
 import ThemeToggle from "../components/ThemeToggle";
 
@@ -26,6 +28,7 @@ export default function Home() {
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "keyvalues", label: "Key-Value Store", icon: Key },
     { id: "projects", label: "Projects", icon: FolderOpen },
+    { id: "websites", label: "Websites", icon: Globe },
     { id: "commands", label: "Commands", icon: Terminal },
     { id: "notes", label: "Notes", icon: FileText },
   ];
@@ -38,6 +41,8 @@ export default function Home() {
         return <KeyValueSection />;
       case "projects":
         return <ProjectsSection />;
+      case "websites":
+        return <WebsitesSection />;
       case "commands":
         return <CommandsSection />;
       case "notes":
